@@ -1,0 +1,47 @@
+.person {
+    position: relative;
+    border: grey solid thin;
+    margin: 0.5rem;
+    padding: 0 0.25rem;
+    max-width: 30em;
+    min-height: 4em;
+    background: white;
+}
+
+img.profileImage {
+  width: 100px;
+}
+
+.number, .name {
+    position: absolute;
+    left: 120px;
+}
+
+.number {
+    font-size: 16pt;
+    top: 1.2em;
+    color: grey;
+}
+
+.name {
+    font-size: 20pt;
+    top: 0em;
+}
+
+body {
+    background: #eeeeee;
+}
+
+.mt1 {
+    display: inline-block;
+    margin-top: 0.25rem;
+}
+
+label.db {
+    font-size: 0.8rem;
+    font-weight: 800;
+}
+
+.data {
+    font-family: sans-serif;
+}
