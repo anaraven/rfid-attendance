@@ -13,17 +13,22 @@
       <label class="db" for="card">Card</label>
       <input type="text" onchange="updateTitle(this)" data-dst="card">
     </div>
-    <button onclick="download()">Save</button>
+    <button>Go</button>
+    <button>No card</button>
+    <button onclick="download()">Save file</button>
   </fieldset>
 </div>
+<p id="count">0</p>
 <div id="all">
 </div>
 <script src="rfid-students.json"></script>
 <script src="data-students.json"></script>
 <script>
-const all  = document.getElementById('all');
+const all = document.getElementById('all');
+const cnt = document.getElementById('count');
 var seen = {};
-var log = "card\tst_number\tgmt_date\n";
+var num = 0;
+var log = "st_number\tcard\tgmt_date\n";
 
 function updateTitle(tgt) {
   if(seen[tgt.value]) {
@@ -39,10 +44,10 @@ function updateTitle(tgt) {
     tgt.value = "";
     return;
   }
-  record = {id: st_num, date: new Date()};
-  seen[tgt.value] = record;
-  log += tgt.value + '\t' + record.id + '\t' + 
-         record.date.toISOString().substr(0,19)+'\n';
+  let now = new Date();
+  seen[tgt.value] = {id: st_num, date: now};
+  log += st_num + '\t' + tgt.value + '\t' + 
+         now.toISOString().substr(0,19)+'\n';
   let newItem = '<div class="person">';
   if(data.hasOwnProperty(st_num)) {
     newItem += '<img class="profileImage" src="JPG/'+st_num + '.jpg" width="100"/>';
@@ -56,6 +61,7 @@ function updateTitle(tgt) {
   newItem += '</div>';
   all.insertAdjacentHTML('afterbegin',  newItem );
   tgt.value = "";
+  cmt.innerText = ++num;
 }
 
 // Function to download data to a file

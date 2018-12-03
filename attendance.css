@@ -45,3 +45,15 @@ label.db {
 .data {
     font-family: sans-serif;
 }
+
+#count {
+    font-family: sans-serif;
+    text-align: right;
+    font-size: 80px;
+    max-width: 30rem;
+    min-height: 80px;
+    margin: 0.5rem;
+    padding: 0 0.25rem;
+    border: grey solid thin;
+    background: white;
+}
