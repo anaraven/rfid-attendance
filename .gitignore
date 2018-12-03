@@ -34,8 +34,7 @@ vignettes/*.pdf
 
 # Shiny token, see https://shiny.rstudio.com/articles/shinyapps.html
 rsconnect/
-data-students.json
-rfid-students.json
+
 x.html
 HTML/
 JPG/
