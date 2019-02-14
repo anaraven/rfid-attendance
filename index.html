@@ -31,12 +31,12 @@ var num = 0;
 var log = "st_number\tcard\tgmt_date\n";
 
 function updateTitle(tgt) {
-  if(seen[tgt.value]) {
-      tgt.value = "";
-      return;
+  if(seen[tgt.value]) { // seen before
+      tgt.value = ""; // clean input box
+      return; // ignore repeated person
   }
   st_num = ids[tgt.value]
-  if (typeof st_num=="undefined") {
+  if (typeof st_num=="undefined") { // if this is a new card
     st_num = prompt("Student number for card "+tgt.value, "")
     console.log("["+st_num+"]")
   }
@@ -47,7 +47,7 @@ function updateTitle(tgt) {
   let now = new Date();
   seen[tgt.value] = {id: st_num, date: now};
   log += st_num + '\t' + tgt.value + '\t' + 
-         now.toISOString().substr(0,19)+'\n';
+         now.toISOString().substr(0,19)+'\n'; // date without millliseconds
   let newItem = '<div class="person">';
   if(data.hasOwnProperty(st_num)) {
     newItem += '<img class="profileImage" src="JPG/'+st_num + '.jpg" width="100"/>';
@@ -61,12 +61,15 @@ function updateTitle(tgt) {
   newItem += '</div>';
   all.insertAdjacentHTML('afterbegin',  newItem );
   tgt.value = "";
-  cmt.innerText = ++num;
+  cnt.innerText = ++num;
 }
 
 // Function to download data to a file
 function download() {
-    const filename = 'attendance.txt';
+    let now = new Date();
+    let dt = now.toISOString().substr(0,16)
+    dt = dt.split('T').join("-").split(':').join('')
+    const filename = dt+'.att.txt';
     var file = new Blob([log], {type: 'text/plain'});
     if (window.navigator.msSaveOrOpenBlob) // IE10+
         window.navigator.msSaveOrOpenBlob(file, filename);
