@@ -7,3 +7,7 @@ rfid-students-new.json: $(wildcard $(SRC)/*/attendance/20*.txt)
 
 data-students.json: $(wildcard HTML/*)
 	@awk -f parseHTML.awk $^ > $@
+
+#HTML/%.html: bioinfo
+#	grep $* cmb1 | awk -vCOOKIE="$(COOKIE)" -f ~/Web/blog/_code/attendance/get_html.awk 
+
