@@ -1,4 +1,4 @@
-#!/usr/bin/oython
+#!/usr/local/bin/python3
 
 # Open "DevTools -> Network in chrome"
 # Open student list in AKSIS
