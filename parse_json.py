@@ -9,11 +9,11 @@
 import json
 import sys
 
-x = open(sys.argv[1],"r").readlines()
-y = json.loads(''.join(x))
-
-for z in y["Data"]:
-  print("{Numara}\t{Ad}\t{Soyad}\t{FKKisiID}\t{ogrKimlikID}\t{CID}\t{DevamZorunluluguString}".format_map(z))
+for fname in sys.argv[1:]:
+    x = open(fname, "r").readlines()
+    y = json.loads(''.join(x))
+    for z in y["Data"]:
+        print("{Numara}\t{Ad}\t{Soyad}\t{FKKisiID}\t{ogrKimlikID}\t{CID}\t{DevamZorunluluguString}".format_map(z))
 
 # pipe the output to
 # awk -vCOOKIE="Cookie" -f ~/Web/blog/_code/attendance/get_html.awk | sh
