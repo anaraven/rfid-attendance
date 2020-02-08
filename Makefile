@@ -17,10 +17,13 @@ all: $(TGT)
 #	$(call get_html, 0405150035, 526129)
 	
 JPG/%.jpg: HTML/%.html
-	awk -v OUTFILE=$@ -f get_jpeg.awk $^ | sh
+	@awk -v OUTFILE=$@ -f get_jpeg.awk $^ | sh
 
 task.mk: $(wildcard $(YEAR)/*)
-	./parse_json.py $^ | cut -f 1-5|sort -u| awk -f tsv2make.awk > $@
+	@./parse_json.py $^ | cut -f 1-5|sort -u| awk -f tsv2make.awk > $@
+	
+emails.txt: $(wildcard HTML/*)
+	@awk -f get_emails.awk $^ > $@
 
 rfid-students-new.json: $(wildcard $(SRC)/*/attendance/20*.txt)
 	@awk 'NF<=3 {a[$$2]=$$1; next} \
