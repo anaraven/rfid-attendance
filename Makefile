@@ -3,9 +3,12 @@
 YEAR=2019
 
 define get_html
-curl 'http://abs.istanbul.edu.tr/DersDegerlendirme/DersVeDegerlendirme/Detay?FKOgrenciID=$(1)' -H 'Connection: keep-alive' -H 'Cache-Control: max-age=0' -H 'Upgrade-Insecure-Requests: 1' -H 'User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/70.0.3538.102 Safari/537.36' -H 'DNT: 1' -H 'Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8' -H 'Accept-Encoding: gzip, deflate' -H 'Accept-Language: en-US,en;q=0.9,es;q=0.8,fr;q=0.7' -H '$(COOKIE)' --compressed -o HTML/$(2).html
-sleep 2
+curl 'http://abs.istanbul.edu.tr/DersDegerlendirme/DersVeDegerlendirme/Detay?FKOgrenciID=$(1)' -K curl.ini -H '$(COOKIE)' -o HTML/$(2).html
+sleep `jot -r 1 0.1 1.0  0.1`
 endef
+
+# Notice that `sleep` with non-integer argument is only valid in the Mac
+# `jot -r` chooses 1 random number between 0.1 and 1.0 in steps of 0.1
 
 TGT:=
 include task.mk
@@ -17,6 +20,7 @@ all: $(TGT)
 #	$(call get_html, 0405150035, 526129)
 	
 JPG/%.jpg: HTML/%.html
+	@echo $@
 	@awk -v OUTFILE=$@ -f get_jpeg.awk $^ | sh
 
 task.mk: $(wildcard $(YEAR)/*)
