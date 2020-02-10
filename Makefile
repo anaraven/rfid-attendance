@@ -54,12 +54,15 @@ courses.txt: $(YEAR)/$(SEM)/all_courses.json
 
 # Course filename is YEAR/SEMESTER/CODE-DEPARTMENT
 courses.mk: courses.txt
-	@awk -F"\t" '{print "$$(YEAR)/$$(SEM)/"$$1"-"$$3".json:\n\t$$(call get_course,"$$2")"; \
+	@awk -F"\t" '{print "$$(YEAR)/$$(SEM)/"$$1"-"$$3".json:\n\t@$$(call get_course,"$$2")"; \
 		print "\nTGT2+= $$(YEAR)/$$(SEM)/"$$1"-"$$3".json\n"}' $^ > $@
 
 define get_course
-curl 'http://abs.istanbul.edu.tr/DersDegerlendirme/DersiAlanOgrenciListesi/GetDersiAlanOgrenciler' -H 'Referer: http://abs.istanbul.edu.tr/DersDegerlendirme/DersiAlanOgrenciListesi/DersiAlanOgrenciler?dersGrupEID=$(1)' -H '$(COOKIE)' -K curl.ini --data 'sort=&group=&filter=&dersGrupEID=$(1) -o $@' 
+curl 'http://abs.istanbul.edu.tr/DersDegerlendirme/DersiAlanOgrenciListesi/GetDersiAlanOgrenciler' -H 'Referer: http://abs.istanbul.edu.tr/DersDegerlendirme/DersiAlanOgrenciListesi/DersiAlanOgrenciler?dersGrupEID=$(1)' -H '$(COOKIE)' -K curl.ini --data 'sort=&group=&filter=&dersGrupEID=$(1)' -o $@
 sleep `jot -r 1 0.1 1.0  0.1`
 endef
+
+TGT2:=
+include courses.mk
 
 courses: $(TGT2)
