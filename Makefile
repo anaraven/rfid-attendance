@@ -50,11 +50,12 @@ $(YEAR)/$(SEM)/all_courses.json: cookie.mk
 	curl 'http://abs.istanbul.edu.tr/DersDegerlendirme/DersiAlanOgrenciListesi/GetTanimliDersler' -H 'Connection: keep-alive' -H 'Cache-Control: max-age=0' -H 'Upgrade-Insecure-Requests: 1' -H 'User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/70.0.3538.102 Safari/537.36' -H 'Referer: http://abs.istanbul.edu.tr/DersDegerlendirme/DersiAlanOgrenciListesi/Index' -H 'DNT: 1' -H 'Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8' -H 'Accept-Encoding: gzip, deflate' -H 'Accept-Language: en-US,en;q=0.9,es;q=0.8,fr;q=0.7' -H '$(COOKIE)' --data 'sort=&page=1&pageSize=50&group=Birim-asc&filter=&yil=$(YEAR)&donem=$(SEM)' --compressed -o $@
 
 courses.txt: $(YEAR)/$(SEM)/all_courses.json
-	@jq -r '.Data[].Items[] | [.DersKodu, .DersEID, .DersAdi] |@tsv' $^ > $@
+	@jq -r '.Data[].Items[] | [.DersKodu, .DersEID, .BirimID, .DersAdi] |@tsv' $^ > $@
 
+# Course filename is YEAR/SEMESTER/CODE-DEPARTMENT
 courses.mk: courses.txt
-	awk -F"\t" '{print "$$(YEAR)/$$(SEM)/"$$1".json:\n\t$$(call get_course,"$$2")"; \
-		print "\nTGT2+= $$(YEAR)/$$(SEM)/"$$1".json\n"}' $^ > $@
+	@awk -F"\t" '{print "$$(YEAR)/$$(SEM)/"$$1"-"$$3".json:\n\t$$(call get_course,"$$2")"; \
+		print "\nTGT2+= $$(YEAR)/$$(SEM)/"$$1"-"$$3".json\n"}' $^ > $@
 
 define get_course
 curl 'http://abs.istanbul.edu.tr/DersDegerlendirme/DersiAlanOgrenciListesi/GetDersiAlanOgrenciler' -H 'Referer: http://abs.istanbul.edu.tr/DersDegerlendirme/DersiAlanOgrenciListesi/DersiAlanOgrenciler?dersGrupEID=$(1)' -H '$(COOKIE)' -K curl.ini --data 'sort=&group=&filter=&dersGrupEID=$(1) -o $@' 
