@@ -4,6 +4,7 @@ YEAR=2019
 SEM=2
 TGT:=
 COURSES:=
+SRC:=~/Blog/_priv/2020
 
 all: targets
 
@@ -12,6 +13,7 @@ include courses.mk
 include task.mk
 
 courses: $(COURSES)
+	echo $(COURSES)
 
 task.mk: $(COURSES)
 	@jq -r '.Data[]|[.Numara, .ogrKimlikID]|@tsv' $^ | grep -v '^\t' | \
@@ -36,6 +38,17 @@ rfid-students-new.json: $(wildcard $(SRC)/*/attendance/20*.txt)
 	END {print "ids={"; for(i in a) print "\""i"\" : \""a[i]"\","; \
 		print "};"}' $^ > $@
 
+rfid-students.txt: $(wildcard $(SRC)/*/attendance/20*.txt)
+	@awk -F "\t" 'NF==2 {a[$$1]=$$2; next} /st_number/ {next} \
+		a[$$2]!=$$1 {a[$$2]=$$1} \
+		END {for(i in a) print i"\t"a[i]}' $@ $^ | sort > rfid-students.tmp
+	@mv rfid-students.tmp $@
+
+rfid-students.json: rfid-students.txt
+	@awk 'BEGIN {print "ids = {"} \
+		{print "\""$$1"\" : \""$$2"\","} \
+		END {print "};"}' $^ > $@
+
 data-students.json: $(wildcard HTML/*)
 	@awk -f parseHTML.awk $^ > $@
 
@@ -47,7 +60,7 @@ courses.txt: $(YEAR)/$(SEM)/all_courses.json
 
 # Course filename is YEAR/SEMESTER/CODE-DEPARTMENT
 courses.mk: courses.txt
-	@awk -F"\t" '{print "$$(YEAR)/$$(SEM)/"$$1"-"$$3".json:\n\t@$$(call get_course,"$$2")"; \
+	@awk -F"\t" '{print "$$(YEAR)/$$(SEM)/"$$1"-"$$3".json: cookie.mk\n\t@$$(call get_course,"$$2")"; \
 		print "\nCOURSES+= $$(YEAR)/$$(SEM)/"$$1"-"$$3".json\n"}' $^ > $@
 
 define get_course
