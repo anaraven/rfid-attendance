@@ -3,32 +3,27 @@
     border: grey solid thin;
     margin: 0.5rem;
     padding: 0 0.25rem;
-    max-width: 30em;
-    min-height: 4em;
+    max-width: 720px;
+    min-height: 140px;
     background: white;
 }
 
 img.profileImage {
+  float: left;
   width: 100px;
-}
-
-.number, .name {
-    position: absolute;
-    left: 120px;
+  margin: 1mm;
 }
 
 .number {
-    font-size: 14pt;
-    top: 2.1rem;
     color: grey;
 }
 
 .name {
-    font-size: 20pt;
-    top: 0em;
+    font-size: 130%;
 }
 
 body {
+    font-size: 150%;
     background: #eeeeee;
 }
 
@@ -38,7 +33,6 @@ body {
 }
 
 label.db {
-    font-size: 0.8rem;
     font-weight: 800;
 }
 
@@ -50,10 +44,19 @@ label.db {
     font-family: sans-serif;
     text-align: right;
     font-size: 80px;
-    max-width: 30rem;
+    max-width: 720px;
     min-height: 80px;
     margin: 0.5rem;
     padding: 0 0.25rem;
     border: grey solid thin;
     background: white;
 }
+
+button {
+    font-size: 100%;
+}
+
+input[type="text"] {
+    font-size: 100%;
+}
+

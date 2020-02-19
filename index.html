@@ -8,14 +8,14 @@
 </head>
 <body>
 <div class="data">
-  <fieldset class="person" style="min-height: 2.8em;">
+  <fieldset class="person" style="min-height: 3em; padding-bottom: 1mm">
     <legend>Student</legend>
     <div class="mt1">
       <label class="db" for="card">Card</label>
       <input type="text" onchange="updateTitle(this)" data-dst="card">
     </div>
-    <button>Go</button>
-    <button>No card</button>
+    <!-- button>Go</button>
+    <button>No card</button -->
     <button onclick="download()">Save file</button>
   </fieldset>
 </div>
@@ -52,12 +52,15 @@ function updateTitle(tgt) {
   let newItem = '<div class="person">';
   if(data.hasOwnProperty(st_num)) {
     newItem += '<img class="profileImage" src="JPG/'+st_num + '.jpg" width="100"/>';
-    newItem += '<div class="name">' + data[st_num].name
-    newItem += " " + data[st_num].surname + '</div>';
-    newItem += '<div class="number">' + st_num + '</div>'
+    newItem += '<span class="name">' + data[st_num].name
+    newItem += " " + data[st_num].surname + '</span><br/>';
+    newItem += '<span class="number">' + st_num + '</span>';
   } else {
-    newItem += '<div class="name">???</div>';
-    newItem += '<div class="number">' + st_num + '</div>';
+    newItem += '<span class="name">??????</span><br/>';
+    newItem += '<span class="number">?????</span>';
+  }
+  if(extra.hasOwnProperty(st_num)) {
+    newItem += '<br/><span class="extra">' + extra[st_num] + '</span>';
   }
   newItem += '</div>';
   all.insertAdjacentHTML('afterbegin',  newItem );
