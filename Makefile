@@ -59,10 +59,17 @@ data-students.json: $(wildcard $(HTML)/*)
 	@date "+%Y-%m-%d %H:%M:%S $@"
 	@awk -f parseHTML.awk $^ > $@
 
-extra.js: /Users/anaraven/Downloads/Welcome\ survey\ CMB2\ 2020.csv
+extra.txt: /Users/anaraven/Downloads/WelcomesurveyCMB22020.csv /Users/anaraven/Downloads/PeerReview1.csv
 	@date "+%Y-%m-%d %H:%M:%S $@"
-	@awk -F, 'BEGIN {print "extra = {"} \
-		NR>1 {print $$3,": \"Survey OK\","} \
+	@awk -F, 'BEGIN {OFS="\t"} \
+		FILENAME==ARGV[1] && FNR>1 {msg[$$3]+="Survey OK "} \
+		FILENAME==ARGV[2] && FNR>1 && NF>10 {msg[$$3]+="HW2 OK"} \
+		END {for(i in msg){print i,msg[i]}}' $^ > $@
+
+extra.js: extra.txt
+	@date "+%Y-%m-%d %H:%M:%S $@"
+	@awk -F"\t" 'BEGIN {print "extra = {"} \
+		{print $$1,": \""$$2"\","} \
 		END {print "};"}' "$^" > $@
 
 $(YEAR)/$(SEM)/all_courses.json: cookie.mk
