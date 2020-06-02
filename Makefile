@@ -62,8 +62,8 @@ data-students.json: $(wildcard $(HTML)/*)
 extra.txt: /Users/anaraven/Downloads/WelcomesurveyCMB22020.csv /Users/anaraven/Downloads/PeerReview1.csv
 	@date "+%Y-%m-%d %H:%M:%S $@"
 	@awk -F, 'BEGIN {OFS="\t"} \
-		FILENAME==ARGV[1] && FNR>1 {msg[$$3]+="Survey OK "} \
-		FILENAME==ARGV[2] && FNR>1 && NF>10 {msg[$$3]+="HW2 OK"} \
+		FILENAME==ARGV[1] && FNR>1 {msg[$$3]="Survey,"} \
+		FILENAME==ARGV[2] && FNR>1 && NF>50 {msg[$$3]=msg[$$3] "HW2,"} \
 		END {for(i in msg){print i,msg[i]}}' $^ > $@
 
 extra.js: extra.txt
